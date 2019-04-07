@@ -89,8 +89,11 @@ fi
 # Adb stuff
 set -e
 $ADB tcpip $PORT 
-$ADB connect $VALID_IP:$PORT 
-MODEL=$($ADB devices -l | grep $VALID_IP | awk '{print $4}' | awk -F ':' '{print $2}') 
-echo "adb-air: $MODEL connected with ip: $VALID_IP, port: $PORT" 
-exit 0
-
+if [[ $ADB connect $VALID_IP:$PORT; ]]; then
+    MODEL=$($ADB devices -l | grep $VALID_IP | awk '{print $4}' | awk -F ':' '{print $2}') 
+    echo "adb-air: $MODEL connected with ip: $VALID_IP, port: $PORT"
+    exit 0
+else
+    echo "adb-air: $MODEL not connected."
+    exit 1
+fi
