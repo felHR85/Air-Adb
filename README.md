@@ -6,7 +6,7 @@ A simple utiliy script that makes the process of setting up ADB over Wifi easier
 * Run ./air-adb.sh
 * Done! Disconnect your device and just start hacking
 
-![](name-of-giphy.gif)
+![](tty.gif)
 
 Parameters
 --------------------------------------
