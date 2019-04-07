@@ -57,17 +57,21 @@ fi
 # Restart adb
 $ADB kill-server && $ADB start-server
 
-# Get ip of your mobile device trying different methods if necessary
-IP=$(getIP1 $ADB)
-if [[ -z $IP ]]; then
-    IP=$(getIP2 $ADB)
+# Get ip from parameters or from adb shell
+if [[ -z $1 ]]; then
+    IP=$(getIP1 $ADB)
     if [[ -z $IP ]]; then
-        IP=$(getIP3 $ADB)
+        IP=$(getIP2 $ADB)
         if [[ -z $IP ]]; then
-            echo "air-adb: couldn't get any ip directly from the device"
-            exit -1
+            IP=$(getIP3 $ADB)
+            if [[ -z $IP ]]; then
+                echo "air-adb: couldn't get any ip directly from the device"
+                exit -1
+            fi
         fi
     fi
+else
+    IP=$1
 fi
 
 #Validated IP
@@ -77,11 +81,16 @@ if [[ -z $VALID_IP ]]; then
     exit 1
 fi
 
+# use port argument if exists
+if [[ -n $2 ]]; then
+    PORT=$2
+fi
+
 # Adb stuff
-#TODO stop execution when something wrong
-$ADB tcpip $PORT
-$ADB connect $VALID_IP
-MODEL=$($ADB devices -l | grep $VALID_IP | awk '{print $4}' | awk -F ':' '{print $2}')
-echo "adb-air: $MODEL connected with ip: $VALID_IP, port: $PORT"
+set -e
+$ADB tcpip $PORT 
+$ADB connect $VALID_IP 
+MODEL=$($ADB devices -l | grep $VALID_IP | awk '{print $4}' | awk -F ':' '{print $2}') 
+echo "adb-air: $MODEL connected with ip: $VALID_IP, port: $PORT" 
 exit 0
 
