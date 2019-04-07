@@ -42,7 +42,6 @@ function getIP3() {
 }
 
 # Get adb from path or directly from default Android SDK installations
-set -e
 ADB_PATH=$(which adb)
 
 if [[ -x $ADB_PATH ]]; then
@@ -80,8 +79,8 @@ fi
 
 # Adb stuff
 #TODO stop execution when something wrong
-echo $($ADB tcpip $PORT)
-echo $($ADB connect $VALID_IP)
+$ADB tcpip $PORT
+$ADB connect $VALID_IP
 MODEL=$($ADB devices -l | grep $VALID_IP | awk '{print $4}' | awk -F ':' '{print $2}')
 echo "adb-air: $MODEL connected with ip: $VALID_IP, port: $PORT"
 exit 0
