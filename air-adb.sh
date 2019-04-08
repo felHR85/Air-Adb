@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # OS dependant constants
-OSX_ADB_DEFAULT_PATH=/Applications/AndroidSDK/sdk/platform-tools/adb
+OSX_ADB_DEFAULT_PATH=~/Library/Android/sdk/platform-tools/adb
 LINUX_ADB_DEFAULT_PATH=~/Android/Sdk/platform-tools/adb
 
 # Default values
