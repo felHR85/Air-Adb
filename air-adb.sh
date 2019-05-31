@@ -16,7 +16,12 @@ function getAdbPath(){
         ;;
 
         Linux)
-            echo $LINUX_ADB_DEFAULT_PATH
+            if [[ -z uname -a | grep Microsoft ]]; then #Linux
+                echo $LINUX_ADB_DEFAULT_PATH
+            else #Windows subsystem for Linux
+                WINDOWS_USER=$(whoami.exe | awk -F "\\" '{print $2}')
+                echo /mnt/c/Users/${VAR/$'\r'/}/AppData/Local/Android/Sdk/platform-tools/adb.exe
+            fi
         ;;
 
         CYGWIN*|MINGW32*|MSYS*)
