@@ -16,11 +16,12 @@ function getAdbPath(){
         ;;
 
         Linux)
-            if [[ -z uname -a | grep Microsoft ]]; then #Linux
+            HAS_MICROSOFT=$(uname -a | grep Microsoft)
+            if [[ -z $HAS_MICROSOFT ]]; then #Linux
                 echo $LINUX_ADB_DEFAULT_PATH
             else #Windows subsystem for Linux
                 WINDOWS_USER=$(whoami.exe | awk -F "\\" '{print $2}')
-                echo /mnt/c/Users/${VAR/$'\r'/}/AppData/Local/Android/Sdk/platform-tools/adb.exe
+                echo /mnt/c/Users/${WINDOWS_USER/$'\r'/}/AppData/Local/Android/Sdk/platform-tools/adb.exe
             fi
         ;;
 
@@ -60,7 +61,14 @@ else
 fi
 
 # Restart adb
-$ADB kill-server && $ADB start-server
+IS_WSL=$(uname -a | grep Microsoft)
+if [[ -z $IS_WSL ]]; then # Linux/ OSX
+    $ADB kill-server && $ADB start-server
+else # Windows subsystem for Linux
+    # For some reason in WSL1 start-server doesnt terminate. A sigkill is needed
+    $ADB kill-server && timeout --signal=SIGKILL 20s $ADB start-server
+fi
+
 
 # Get ip from parameters or from adb shell
 if [[ -z $1 ]]; then
