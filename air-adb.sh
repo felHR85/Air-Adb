@@ -51,7 +51,7 @@ function getIP3() {
 ADB_PATH=$(which adb)
 
 if [[ -x $ADB_PATH ]]; then
-    ADB="adb"
+    ADB=$ADB_PATH
 else
     ADB=$(getAdbPath)
     if [[ ! -x $ADB ]]; then
