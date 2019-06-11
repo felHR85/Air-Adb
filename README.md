@@ -15,4 +15,4 @@ Sometimes you want to specify ip and tcp port parameters manually.
 
 Compatibility
 --------------------------------------
-Tested on OS X and Linux (Debian 9)
+Tested on OS X,  Linux (Debian 9) and WSL (Windows subsystem for Linux)
