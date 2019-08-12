@@ -6,6 +6,7 @@ LINUX_ADB_DEFAULT_PATH=~/Android/Sdk/platform-tools/adb
 
 # Default values
 PORT=5555
+WIN_MOUNTED_UNIT=C:
 
 # Functions
 function getAdbPath(){
@@ -21,7 +22,8 @@ function getAdbPath(){
                 echo $LINUX_ADB_DEFAULT_PATH
             else #Windows subsystem for Linux
                 WINDOWS_USER=$(whoami.exe | awk -F "\\" '{print $2}')
-                echo /mnt/c/Users/${WINDOWS_USER/$'\r'/}/AppData/Local/Android/Sdk/platform-tools/adb.exe
+                MOUNT_C=$(cat /proc/mounts | grep $WIN_MOUNTED_UNIT | awk '{print $2}')
+                echo $MOUNT_C/Users/${WINDOWS_USER/$'\r'/}/AppData/Local/Android/Sdk/platform-tools/adb.exe
             fi
         ;;
 
